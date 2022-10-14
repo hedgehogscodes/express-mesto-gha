@@ -13,7 +13,7 @@ const ERRORS = {
   },
 };
 
-const hendleError = (res, err) => {
+const handleError = (res, err) => {
   if (err.name === "CastError" || err.name === "ValidationError") {
     res.status(ERRORS.ERROR_400.CODE).send({ message: ERRORS.ERROR_400.MESSAGE });
   } else if (err.message === "notValidId") {
@@ -23,4 +23,4 @@ const hendleError = (res, err) => {
   }
 };
 
-module.exports = { hendleError };
+module.exports = { handleError };

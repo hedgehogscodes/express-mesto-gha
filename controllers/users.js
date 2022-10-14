@@ -1,24 +1,24 @@
 const User = require("../models/users");
-const { hendleError } = require("../utils/errors");
+const { handleError } = require("../utils/errors");
 
 module.exports.getUsers = (req, res) => {
   User.find({})
     .then((user) => res.send({ data: user }))
-    .catch((err) => hendleError(res, err));
+    .catch((err) => handleError(res, err));
 };
 
 module.exports.getUser = (req, res) => {
   User.findById(req.params.userId)
     .orFail(new Error("notValidId"))
     .then((user) => res.send({ data: user }))
-    .catch((err) => hendleError(res, err));
+    .catch((err) => handleError(res, err));
 };
 
 module.exports.createUser = (req, res) => {
   const { name, about, avatar } = req.body;
   User.create({ name, about, avatar })
     .then((user) => res.send({ data: user }))
-    .catch((err) => hendleError(res, err));
+    .catch((err) => handleError(res, err));
 };
 
 module.exports.updateUser = (req, res) => {
@@ -34,7 +34,7 @@ module.exports.updateUser = (req, res) => {
   )
     .orFail(new Error("notValidId"))
     .then((user) => res.send({ data: user }))
-    .catch((err) => hendleError(res, err));
+    .catch((err) => handleError(res, err));
 };
 
 module.exports.updateUserAvatar = (req, res) => {
@@ -50,5 +50,5 @@ module.exports.updateUserAvatar = (req, res) => {
   )
     .orFail(new Error("notValidId"))
     .then((user) => res.send({ data: user }))
-    .catch((err) => hendleError(res, err));
+    .catch((err) => handleError(res, err));
 };

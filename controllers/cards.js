@@ -1,10 +1,10 @@
 const Card = require("../models/cards");
-const { hendleError } = require("../utils/errors");
+const { handleError } = require("../utils/errors");
 
 module.exports.getCards = (req, res) => {
   Card.find({})
     .then((user) => res.send({ data: user }))
-    .catch((err) => hendleError(res, err));
+    .catch((err) => handleError(res, err));
 };
 
 module.exports.createCard = (req, res) => {
@@ -12,14 +12,14 @@ module.exports.createCard = (req, res) => {
 
   Card.create({ name, link, owner: req.user._id })
     .then((card) => res.send({ data: card }))
-    .catch((err) => hendleError(res, err));
+    .catch((err) => handleError(res, err));
 };
 
 module.exports.deleteCard = (req, res) => {
   Card.findByIdAndRemove(req.params.cardId)
     .orFail(new Error("notValidId"))
     .then((card) => res.send({ data: card }))
-    .catch((err) => hendleError(res, err));
+    .catch((err) => handleError(res, err));
 };
 
 module.exports.putLike = (req, res) => {
@@ -32,7 +32,7 @@ module.exports.putLike = (req, res) => {
   )
     .orFail(new Error("notValidId"))
     .then((card) => res.send({ data: card }))
-    .catch((err) => hendleError(res, err));
+    .catch((err) => handleError(res, err));
 };
 
 module.exports.deleteLike = (req, res) => {
@@ -45,5 +45,5 @@ module.exports.deleteLike = (req, res) => {
   )
     .orFail(new Error("notValidId"))
     .then((card) => res.send({ data: card }))
-    .catch((err) => hendleError(res, err));
+    .catch((err) => handleError(res, err));
 };

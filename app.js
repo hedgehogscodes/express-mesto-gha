@@ -4,7 +4,7 @@ const bodyParser = require("body-parser");
 const { errors, celebrate, Joi } = require("celebrate");
 const { NotFoundError } = require("./utils/errors");
 require("dotenv").config();
-
+const regexUrl = /https?:\/\/(www\.)?[\w-]+(\.[a-z]+)[\w-._~:/?#@!$&'()*+,;=%]*#?/gi;
 const usersRouter = require("./routes/users");
 const cardsRouter = require("./routes/cards");
 const { login, createUser } = require("./controllers/users");
@@ -15,9 +15,9 @@ const app = express();
 
 const validateUser = celebrate({
   body: Joi.object().keys({
-    name: Joi.string().min(2),
-    about: Joi.string().min(2),
-    avatar: Joi.string(),
+    name: Joi.string().min(2).max(30),
+    about: Joi.string().min(2).max(30),
+    avatar: Joi.string().regex(regexUrl),
     email: Joi.string().required().email(),
     password: Joi.string().required().min(8),
   }),

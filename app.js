@@ -2,10 +2,12 @@ const express = require("express");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const { errors, celebrate, Joi } = require("celebrate");
+const helmet = require("helmet");
 const { NotFoundError } = require("./utils/errors");
 require("dotenv").config();
 
-const REGEX_URL = /https?:\/\/(w{3}.)?(\S)*\.\w{2,3}((\/\w+)+(\/\S+)+)?/;
+const REGEX_URL = require("./utils/regexps");
+const requestLimiter = require("./middlewares/limiter");
 const usersRouter = require("./routes/users");
 const cardsRouter = require("./routes/cards");
 const { login, createUser } = require("./controllers/users");
@@ -26,6 +28,9 @@ const validateUser = celebrate({
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+
+app.use(requestLimiter);
+app.use(helmet());
 
 app.post("/signin", validateUser, login);
 app.post("/signup", validateUser, createUser);

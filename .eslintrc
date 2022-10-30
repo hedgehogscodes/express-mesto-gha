@@ -13,7 +13,8 @@
     "no-underscore-dangle": ["error", {
        "allow": ["_id"]
     }],
-    "quotes": ["error", "double"]
- }
+    "quotes": ["error", "double"],
+    "max-classes-per-file": ["error", 10]
+  }
 
 }

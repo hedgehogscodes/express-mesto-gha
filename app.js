@@ -5,7 +5,7 @@ const { errors, celebrate, Joi } = require("celebrate");
 const { NotFoundError } = require("./utils/errors");
 require("dotenv").config();
 
-const REGEX_URL = /https?:\/\/(www\.)?[\w-]+(\.[a-z]+)[\w-._~:/?#@!$&'()*+,;=%]*#?/;
+const REGEX_URL = /https?:\/\/(w{3}.)?(\S)*\.\w{2,3}((\/\w+)+(\/\S+)+)?/;
 const usersRouter = require("./routes/users");
 const cardsRouter = require("./routes/cards");
 const { login, createUser } = require("./controllers/users");

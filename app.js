@@ -4,6 +4,7 @@ const bodyParser = require("body-parser");
 const { errors, celebrate, Joi } = require("celebrate");
 const { NotFoundError } = require("./utils/errors");
 require("dotenv").config();
+
 const regexUrl = /https?:\/\/(www\.)?[\w-]+(\.[a-z]+)[\w-._~:/?#@!$&'()*+,;=%]*#?/gi;
 const usersRouter = require("./routes/users");
 const cardsRouter = require("./routes/cards");

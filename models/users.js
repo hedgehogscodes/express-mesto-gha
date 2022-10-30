@@ -3,7 +3,7 @@ const validator = require("validator");
 const bcrypt = require("bcryptjs");
 const { UnauthError } = require("../utils/errors");
 
-const regexUrl = /https?:\/\/(www\.)?[\w-]+(\.[a-z]+)[\w-._~:/?#@!$&'()*+,;=%]*#?/gi;
+const REGEX_URL = /https?:\/\/(www\.)?[\w-]+(\.[a-z]+)[\w-._~:/?#@!$&'()*+,;=%]*#?/gi;
 
 const userSchema = new mongoose.Schema({
   name: {
@@ -22,7 +22,7 @@ const userSchema = new mongoose.Schema({
     type: String,
     validate: {
       validator(v) {
-        return regexUrl.test(v);
+        return REGEX_URL.test(v);
       },
       message: "Неверная ссылка!",
     },

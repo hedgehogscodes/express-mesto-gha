@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const { errors, celebrate, Joi } = require("celebrate");
 const helmet = require("helmet");
-const { NotFoundError } = require("./utils/errors");
+const NotFoundError = require("./utils/NotFoundError");
 require("dotenv").config();
 
 const REGEX_URL = require("./utils/regexps");
@@ -22,7 +22,7 @@ const validateUser = celebrate({
     about: Joi.string().min(2).max(30),
     avatar: Joi.string().regex(REGEX_URL),
     email: Joi.string().required().email(),
-    password: Joi.string().required().min(8),
+    password: Joi.string().required(),
   }),
 });
 

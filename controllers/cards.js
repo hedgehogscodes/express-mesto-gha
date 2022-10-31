@@ -1,12 +1,12 @@
 const Card = require("../models/cards");
-const { NotFoundError, BadRequestError, ForbiddenError } = require("../utils/errors");
+
+const NotFoundError = require("../utils/NotFoundError");
+const BadRequestError = require("../utils/BadRequestError");
+const ForbiddenError = require("../utils/ForbiddenError");
 
 module.exports.getCards = (req, res, next) => {
   Card.find({})
     .then((cards) => {
-      if (!cards) {
-        throw new NotFoundError("Данные о карточках не найдены!");
-      }
       res.send(cards);
     })
     .catch(next);
@@ -16,19 +16,16 @@ module.exports.createCard = (req, res, next) => {
   const { name, link } = req.body;
   Card.create({ name, link, owner: req.user._id })
     .then((newCard) => {
-      if (!newCard) {
-        throw new NotFoundError("Неправильно переданы данные");
-      } else {
         res.send(newCard);
-      }
     })
     .catch((err) => {
       if (err.name === "ValidationError") {
         next(
           new BadRequestError("Ошибка валидации. Введены некорректные данные"),
         );
+      } else {
+        next(err);
       }
-      next(err);
     });
 };
 

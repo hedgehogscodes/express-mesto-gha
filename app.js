@@ -4,6 +4,7 @@ const bodyParser = require("body-parser");
 const { errors, celebrate, Joi } = require("celebrate");
 const helmet = require("helmet");
 const NotFoundError = require("./utils/NotFoundError");
+const cors = require("cors");
 require("dotenv").config();
 
 const REGEX_URL = require("./utils/regexps");
@@ -12,6 +13,7 @@ const usersRouter = require("./routes/users");
 const cardsRouter = require("./routes/cards");
 const { login, createUser } = require("./controllers/users");
 const auth = require("./middlewares/auth");
+const { requestLogger, errorLogger } = require("./middlewares/logger");
 
 const { PORT = 3000 } = process.env;
 const app = express();
@@ -26,11 +28,20 @@ const validateUser = celebrate({
   }),
 });
 
+app.use(cors());
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
+app.use(requestLogger);
 app.use(requestLimiter);
 app.use(helmet());
+
+app.get("/crash-test", () => {
+  setTimeout(() => {
+    throw new Error("Сервер сейчас упадёт");
+  }, 0);
+});
 
 app.post("/signin", validateUser, login);
 app.post("/signup", validateUser, createUser);
@@ -43,6 +54,7 @@ app.use("/*", () => {
   throw new NotFoundError("Запрашиваемый ресурс не найден");
 });
 
+app.use(errorLogger);
 app.use(errors());
 
 app.use((err, req, res, next) => {
